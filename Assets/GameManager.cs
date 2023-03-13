@@ -74,9 +74,9 @@ public class GameManager : MonoBehaviour
                         lvlLoadingOp = SceneManager.UnloadSceneAsync(scene);
                         lvlLoadingOp.completed += (dontcare) =>
                         {
-                            state = GameState.LevelLoading;
                             lvlLoadingOp = null;
                             currentLevel++;
+                            state = GameState.LevelLoading;
                         };
                     }
                 }
