@@ -1,18 +1,14 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
     [SerializeField] GameObject GameEndPanel;
     [SerializeField] GameObject GameOverPanel;
 
-    [SerializeField]
-    string[] Levels =
-    {
-        "Level_001","Level_002","Level_003"
-    };
+    [SerializeField] string[] Levels;
     int currentLevel = 0;
     IGameState state;
+    IPlayer currentPlayer;
 
     void Start()
     {

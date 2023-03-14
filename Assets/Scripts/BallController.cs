@@ -5,10 +5,12 @@ using UnityEngine;
 public class BallController : MonoBehaviour
 {
     [SerializeField] Vector2 Force;
-    [SerializeField] BallController[] SpawnsOnPopping;
+    [SerializeField] GameObject SpawnOnPopping;
 
     Rigidbody2D rb;
     Collider2D coll;
+    bool doDrops = false;
+    Vector2 velocityOnHit;
 
     // Start is called before the first frame update
     void Start()
@@ -20,32 +22,50 @@ public class BallController : MonoBehaviour
 
     private void Update()
     {
-        
+        if (doDrops)
+        {
+            if (SpawnOnPopping != null)
+            {
+                var go = GameObject.Instantiate(SpawnOnPopping);
+                go.GetComponent<BallController>().Force = velocityOnHit;
+                go = GameObject.Instantiate(SpawnOnPopping);
+                go.GetComponent<BallController>().Force = Vector2.left * velocityOnHit;
+            }
+
+            //TODO: Chance of powerup here!
+
+            doDrops = false;
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.layer.Equals(LayerMask.NameToLayer("Weapon")))
         {
+            velocityOnHit = rb.velocity;
+            rb.bodyType = RigidbodyType2D.Static;
+            coll.enabled = false;
+
             Animator a = GetComponent<Animator>();
             a.SetBool("ByWeapon", true);
             a.SetTrigger("Hit");
-            rb.bodyType = RigidbodyType2D.Static;
-            coll.enabled = false;
         }
 
         if (collision.gameObject.layer.Equals(LayerMask.NameToLayer("Player")))
         {
+            velocityOnHit = rb.velocity;
+            rb.bodyType = RigidbodyType2D.Static;
+            coll.enabled = false;
+
             Animator a = GetComponent<Animator>();
             a.SetBool("ByPlayer", true);
             a.SetTrigger("Hit");
-            rb.bodyType = RigidbodyType2D.Static;
-            coll.enabled = false;
         }
     }
 
     public void BallDrops()
     {
-
+        Debug.Log("b");
+        doDrops = true;
     }
 }

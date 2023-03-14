@@ -2,10 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviour, IPlayer
 {
     [SerializeField] int HorizontalVelocity = 1;
 
+    List<IPlayerObserver> observers = new List<IPlayerObserver>();
     Rigidbody2D rb;
 
     void Start()
@@ -28,7 +29,21 @@ public class PlayerController : MonoBehaviour
     {
         if (collision.gameObject.layer.Equals(LayerMask.NameToLayer("Ball")))
         {
-            Debug.Log("ouch");
+            foreach (IPlayerObserver o in observers)
+            {
+                o.PlayerDied(this);
+            }
+            observers.Clear();
         }
+    }
+
+    public void Attach(IPlayerObserver observer)
+    {
+        observers.Add(observer);
+    }
+
+    public void Detach(IPlayerObserver observer)
+    {
+        observers.Remove(observer);
     }
 }

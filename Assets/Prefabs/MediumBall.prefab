@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 2550854750527224927}
   - component: {fileID: 3431333517920473912}
   - component: {fileID: 3431333517920473915}
-  - component: {fileID: 3431333518587798355}
   - component: {fileID: 2066193944649190449}
+  - component: {fileID: 3431333518587798355}
   m_Layer: 6
   m_Name: MediumBall
   m_TagString: Untagged
@@ -126,23 +126,6 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
---- !u!114 &3431333518587798355
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1050645712291168069}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b0c18ab5c116b7b479e6f1ae4b54f98a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Force: {x: 0, y: 0}
-  Direction: {x: 0, y: 0}
-  SpawnsOnPopping:
-  - {fileID: 284540898, guid: ce7da147c78afa24f955463771dc975f, type: 3}
-  - {fileID: 284540898, guid: ce7da147c78afa24f955463771dc975f, type: 3}
 --- !u!95 &2066193944649190449
 Animator:
   serializedVersion: 5
@@ -164,6 +147,20 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &3431333518587798355
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1050645712291168069}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0c18ab5c116b7b479e6f1ae4b54f98a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Force: {x: 0, y: 0}
+  SpawnOnPopping: {fileID: 2380767111002874868, guid: ce7da147c78afa24f955463771dc975f, type: 3}
 --- !u!1 &1054391153056274209
 GameObject:
   m_ObjectHideFlags: 0
