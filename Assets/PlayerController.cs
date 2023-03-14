@@ -29,7 +29,6 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.layer.Equals(LayerMask.NameToLayer("Ball")))
         {
             Debug.Log("ouch");
-            GameObject.Destroy(collision.gameObject);
         }
     }
 }

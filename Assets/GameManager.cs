@@ -3,15 +3,6 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    enum GameState
-    {
-        LevelLoading,
-        LevelPlaying,
-        GameOver,
-        LevelFinished,
-        GameEnd
-    }
-
     [SerializeField] GameObject GameEndPanel;
     [SerializeField] GameObject GameOverPanel;
 
@@ -20,79 +11,40 @@ public class GameManager : MonoBehaviour
     {
         "Level_001","Level_002","Level_003"
     };
-
-    AsyncOperation lvlLoadingOp;
     int currentLevel = 0;
-    GameState state = GameState.LevelLoading;
+    IGameState state;
 
+    void Start()
+    {
+        state = new LevelLoadingGameState(this);
+    }
 
     void Update()
     {
-        switch (state)
-        {
-            case GameState.LevelLoading:
+        state.OnUpdate();
+    }
 
-                if (lvlLoadingOp == null)
-                {
-                    lvlLoadingOp = SceneManager.LoadSceneAsync(Levels[currentLevel], LoadSceneMode.Additive);
-                    lvlLoadingOp.completed += (dontcare) => 
-                    {
-                        lvlLoadingOp = null;
-                        state = GameState.LevelPlaying; 
-                    };
-                }
+    public string CurrentLevel { get { return Levels[currentLevel]; } }
 
-                break;
+    public IGameState State { set { state = value; } }
 
-            case GameState.LevelPlaying:
+    public void SetGameOverPanelActive(bool active)
+    {
+        GameOverPanel.SetActive(active);
+    }
 
-                if (Input.anyKeyDown)
-                {
-                    state = GameState.LevelFinished;
-                }
+    public void SetGameEndPanelActive(bool active)
+    {
+        GameEndPanel.SetActive(active);
+    }
 
-                break;
+    public bool IsThereANextLevel()
+    {
+        return currentLevel < Levels.Length - 1;
+    }
 
-            case GameState.GameOver: //temp
-                
-                GameOverPanel.SetActive(true);
-                if (Input.anyKeyDown)
-                {
-                    state = GameState.GameEnd;
-                }
-
-                break;
-
-
-            case GameState.LevelFinished:
-
-                if (currentLevel < Levels.Length - 1)
-                {
-                    if (lvlLoadingOp == null)
-                    {
-                        var scene = SceneManager.GetSceneByName(Levels[currentLevel]);
-                        lvlLoadingOp = SceneManager.UnloadSceneAsync(scene);
-                        lvlLoadingOp.completed += (dontcare) =>
-                        {
-                            lvlLoadingOp = null;
-                            currentLevel++;
-                            state = GameState.LevelLoading;
-                        };
-                    }
-                }
-                else state = GameState.GameEnd;
-
-                break;
-
-            case GameState.GameEnd:
-
-                GameEndPanel.SetActive(true);
-                if(Input.anyKeyDown)
-                {
-                    SceneManager.LoadScene("Menu", LoadSceneMode.Single);
-                }
-
-                break;
-        }
+    public void NextLevel()
+    {
+        currentLevel++;
     }
 }
