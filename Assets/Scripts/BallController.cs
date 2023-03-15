@@ -9,12 +9,13 @@ public class BallController : MonoBehaviour
 
     Rigidbody2D rb;
     Collider2D coll;
+    Animator a;
     bool doDrops = false;
-    Vector2 velocityOnHit;
 
     // Start is called before the first frame update
     void Start()
     {
+        a = GetComponent<Animator>(); ;
         coll = GetComponent<Collider2D>();
         rb = GetComponent<Rigidbody2D>();
         rb.AddForce(Force, ForceMode2D.Impulse);
@@ -27,15 +28,19 @@ public class BallController : MonoBehaviour
             if (SpawnOnPopping != null)
             {
                 var go = GameObject.Instantiate(SpawnOnPopping);
-                go.transform.SetParent(transform.parent);
-                go.GetComponent<BallController>().Force = velocityOnHit;
+                go.transform.SetParent(transform.root);
+                go.transform.position = transform.position;
+                go.GetComponent<BallController>().Force = Force;
+
                 go = GameObject.Instantiate(SpawnOnPopping);
-                go.transform.SetParent(transform.parent);
-                go.GetComponent<BallController>().Force = Vector2.left * velocityOnHit;
+                go.transform.SetParent(transform.root);
+                go.transform.position = transform.position;
+                go.GetComponent<BallController>().Force = Vector2.left * Force;
             }
 
             //TODO: Chance of powerup here!
 
+            a.SetTrigger("SpawnComplete");
             doDrops = false;
         }
     }
@@ -44,22 +49,18 @@ public class BallController : MonoBehaviour
     {
         if (collision.gameObject.layer.Equals(LayerMask.NameToLayer("Weapon")))
         {
-            velocityOnHit = rb.velocity;
             rb.bodyType = RigidbodyType2D.Static;
             coll.enabled = false;
 
-            Animator a = GetComponent<Animator>();
             a.SetBool("ByWeapon", true);
             a.SetTrigger("Hit");
         }
 
         if (collision.gameObject.layer.Equals(LayerMask.NameToLayer("Player")))
         {
-            velocityOnHit = rb.velocity;
             rb.bodyType = RigidbodyType2D.Static;
             coll.enabled = false;
 
-            Animator a = GetComponent<Animator>();
             a.SetBool("ByPlayer", true);
             a.SetTrigger("Hit");
         }
@@ -67,7 +68,6 @@ public class BallController : MonoBehaviour
 
     public void BallDrops()
     {
-        Debug.Log("b");
         doDrops = true;
     }
 }

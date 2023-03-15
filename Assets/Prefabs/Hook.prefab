@@ -146,5 +146,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 169d38829e875fb4cb1922c66957ce32, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GrowthVelocity: 5
+  GrowthVelocity: 10
   InitialScaleY: 0.01
