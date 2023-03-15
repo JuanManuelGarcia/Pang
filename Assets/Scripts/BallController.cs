@@ -27,8 +27,10 @@ public class BallController : MonoBehaviour
             if (SpawnOnPopping != null)
             {
                 var go = GameObject.Instantiate(SpawnOnPopping);
+                go.transform.SetParent(transform.parent);
                 go.GetComponent<BallController>().Force = velocityOnHit;
                 go = GameObject.Instantiate(SpawnOnPopping);
+                go.transform.SetParent(transform.parent);
                 go.GetComponent<BallController>().Force = Vector2.left * velocityOnHit;
             }
 
