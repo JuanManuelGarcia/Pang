@@ -21,7 +21,7 @@ public class LevelFinishedGameState : IGameState
         else gameManager.State = new GameEndGameState(gameManager);
     }
 
-    public void OnUpdate()
+    public void Do()
     {
 
     }

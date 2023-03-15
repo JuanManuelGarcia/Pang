@@ -2,38 +2,60 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
-using UnityEngine.SceneManagement;
 
-public class LevelPlayingGameState : IGameState, IPlayerObserver
+public class LevelPlayingGameState : IGameState, IPlayerObserver, IBallObserver
 {
     GameManager gameManager;
     bool playerDied = false;
+    int numBalls;
 
     public LevelPlayingGameState(GameManager gameManager)
     {
         this.gameManager = gameManager;
-        var players = Object.FindObjectsOfType<MonoBehaviour>().OfType<IPlayer>();
-        foreach (IPlayer s in players)
+
+        var players = Object.FindObjectsOfType<MonoBehaviour>().OfType<IPlayerSubject>();
+        foreach (IPlayerSubject s in players)
         {
+            s.Attach(this);
+        }
+
+        numBalls = 0;
+        var balls = Object.FindObjectsOfType<MonoBehaviour>().OfType<IBallSubject>();
+        foreach (IBallSubject s in balls)
+        {
+            numBalls++;
             s.Attach(this);
         }
     }
 
-    public void OnUpdate()
+    public void Do()
     {
         if(playerDied)
         {
             gameManager.State = new GameOverGameState(gameManager);
         }
 
-        //if (Input.anyKeyDown)
-        //{
-        //    gameManager.State = new LevelFinishedGameState(gameManager);
-        //}
+        if (numBalls == 0)
+        {
+            gameManager.State = new LevelFinishedGameState(gameManager);
+        }
     }
 
-    public void PlayerDied(IPlayer subject)
+    public void Update(ISubject subject)
     {
-        playerDied = true;
+        if (subject is IPlayerSubject)
+        {
+            playerDied = (subject as IPlayerSubject).IsDead; // No need to detach, player clears observers after death
+        }
+
+        if (subject is IBallSubject)
+        {
+            foreach(ISubject s in (subject as IBallSubject).BallsSpawned)
+            {
+                numBalls++;
+                s.Attach(this);
+            }
+            numBalls--;  // No need to detach, ball clears observers after death
+        }
     }
 }

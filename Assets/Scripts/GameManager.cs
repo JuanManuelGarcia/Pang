@@ -8,7 +8,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] string[] Levels;
     int currentLevel = 0;
     IGameState state;
-    IPlayer currentPlayer;
+    IPlayerSubject currentPlayer;
 
     void Start()
     {
@@ -17,7 +17,7 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        state.OnUpdate();
+        state.Do();
     }
 
     public string CurrentLevel { get { return Levels[currentLevel]; } }
