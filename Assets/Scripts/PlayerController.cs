@@ -1,12 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour, IPlayerSubject, IPlayerPowerUps
+public class PlayerController : MonoBehaviour, IPlayerSubject, IPlayerPowerUps, IHourglassController
 {
     [SerializeField] GameObject DefaultAmmoPrefab;
     [SerializeField] GameObject MachineGunAmmoPrefab;
     [SerializeField] int HorizontalVelocity = 1;
+
+    public bool IsDead { get; private set; }
+    public IHourglassState HourglassState { get; set; }
 
     List<IObserver> observers = new List<IObserver>();
     Rigidbody2D rb;
@@ -16,8 +20,6 @@ public class PlayerController : MonoBehaviour, IPlayerSubject, IPlayerPowerUps
     IWeaponStrategy currentWeapon;
 
     private bool shieldUp = false;
-
-    public bool IsDead { get; private set; }
 
     void Start()
     {
@@ -46,6 +48,8 @@ public class PlayerController : MonoBehaviour, IPlayerSubject, IPlayerPowerUps
                 currentWeapon = defaultWeapon;
             }
         }
+
+        if (HourglassState != null) HourglassState.Do();
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -115,6 +119,7 @@ public class PlayerController : MonoBehaviour, IPlayerSubject, IPlayerPowerUps
 
     public void ApplyHourglass()
     {
-        throw new System.NotImplementedException();
+        if (HourglassState is HourglassOnState) (HourglassState as HourglassOnState).ResetTime();
+        else HourglassState = new HourglassOnState(this);
     }
 }

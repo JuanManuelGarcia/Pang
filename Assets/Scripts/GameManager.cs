@@ -6,7 +6,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject GameOverPanel;
 
     [SerializeField] string[] Levels;
-    int currentLevel = 1;
+    int currentLevel = 0;
     IGameState state;
     IPlayerSubject currentPlayer;
 

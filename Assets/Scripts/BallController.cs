@@ -2,21 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BallController : MonoBehaviour, IBallSubject
+public class BallController : MonoBehaviour, IBallSubject, IStoppable
 {
     [SerializeField] Vector2 Force;
     [SerializeField] GameObject SpawnOnPopping;
 
     List<IObserver> observers = new List<IObserver>();
     List<IBallSubject> ballsSpawned = new List<IBallSubject>();
+
     Rigidbody2D rb;
     Collider2D coll;
     Animator a;
+
     bool doDrops = false;
+    Vector2 velocityBackup;
 
     public List<IBallSubject> BallsSpawned { get { return ballsSpawned; } }
+    public bool IsStopped { get; private set; }
 
-    // Start is called before the first frame update
     void Start()
     {
         a = GetComponent<Animator>(); ;
@@ -45,8 +48,6 @@ public class BallController : MonoBehaviour, IBallSubject
                 bc.Force = Vector2.left * Force;
                 ballsSpawned.Add(bc);
             }
-
-            //TODO: Chance of powerup here!
 
             a.SetTrigger("SpawnComplete");
             doDrops = false;
@@ -101,5 +102,19 @@ public class BallController : MonoBehaviour, IBallSubject
     {
         Notify();
         observers.Clear();
+    }
+
+    public void Stop()
+    {
+        velocityBackup = rb.velocity;
+        rb.bodyType = RigidbodyType2D.Static;
+        IsStopped = true;
+    }
+
+    public void Resume()
+    {
+        rb.bodyType = RigidbodyType2D.Dynamic;
+        rb.velocity = velocityBackup;
+        IsStopped = false;
     }
 }

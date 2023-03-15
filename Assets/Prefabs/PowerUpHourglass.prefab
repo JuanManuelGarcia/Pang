@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 9014187004441935008}
   - component: {fileID: 7720053522526482465}
   - component: {fileID: -6067134557322000075}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: PowerUpHourglass
   m_TagString: Untagged
   m_Icon: {fileID: 0}
