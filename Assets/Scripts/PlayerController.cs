@@ -1,6 +1,4 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour, IPlayerSubject, IPlayerPowerUps, IHourglassController
@@ -39,7 +37,7 @@ public class PlayerController : MonoBehaviour, IPlayerSubject, IPlayerPowerUps, 
         force += new Vector2(HorizontalVelocity * Input.GetAxis("Horizontal"), 0);
         rb.AddForce(force);
 
-        if(Input.GetButton("Shoot"))
+        if (Input.GetButton("Shoot"))
         {
             bool ammoLeft = (bool)currentWeapon.Execute(transform);
 
@@ -89,7 +87,7 @@ public class PlayerController : MonoBehaviour, IPlayerSubject, IPlayerPowerUps, 
     public void Detach(IObserver observer)
     {
         if (observers.Contains(observer)) observers.Remove(observer);
-    } 
+    }
 
     public void Notify()
     {
@@ -107,7 +105,7 @@ public class PlayerController : MonoBehaviour, IPlayerSubject, IPlayerPowerUps, 
 
     public void ApplyMachineGun()
     {
-        if(currentWeapon is MachineGunWeaponStrategy)
+        if (currentWeapon is MachineGunWeaponStrategy)
         {
             currentWeapon.AddAmmo(MachineGunWeaponStrategy.InitialAmmo);
         }

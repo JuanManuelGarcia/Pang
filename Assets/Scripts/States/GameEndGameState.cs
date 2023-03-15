@@ -15,10 +15,10 @@ public class GameEndGameState : IGameState
 
     public void Do()
     {
-        if (Input.anyKeyDown)
+        if (Input.GetButtonDown("Submit"))
         {
             gameManager.SetGameEndPanelActive(false);
-            SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
+            SceneManager.LoadScene("Main_Menu", LoadSceneMode.Single);
         }
     }
 }

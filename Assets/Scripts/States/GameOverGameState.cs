@@ -23,7 +23,7 @@ public class GameOverGameState : IGameState
 
     public void Do()
     {
-        if (Input.anyKeyDown && unloaded)
+        if (Input.GetButtonDown("Submit") && unloaded)
         {
             gameManager.SetGameOverPanelActive(false);
             gameManager.State = new LevelLoadingGameState(gameManager);

@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -18,6 +19,12 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         state.Do();
+        
+        if (Input.GetButtonDown("Cancel"))
+        {
+            SetGameEndPanelActive(false);
+            SceneManager.LoadScene("Main_Menu", LoadSceneMode.Single);
+        }
     }
 
     public string CurrentLevel { get { return Levels[currentLevel]; } }
