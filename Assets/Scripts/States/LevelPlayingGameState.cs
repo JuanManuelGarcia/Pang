@@ -35,6 +35,6 @@ public class LevelPlayingGameState : IGameState, IPlayerObserver
     public void Update(ISubject subject)
     {
         if (subject is IPlayerSubject)
-            playerDied = (subject as IPlayerSubject).IsDead;
+            playerDied = (subject as IPlayerSubject).IsDead; // No need to detach, player clears observers after death
     }
 }
