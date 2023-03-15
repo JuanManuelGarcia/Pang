@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -7,18 +5,16 @@ public class LevelFinishedGameState : IGameState
 {
     public LevelFinishedGameState(GameManager gameManager)
     {
-        if (gameManager.IsThereANextLevel())
+        PointsSingleton.Instance.AddPoints(10000);
+        PointsSingleton.Instance.AddPoints(Mathf.CeilToInt(gameManager.TimeLeft) * 10000);
+
+        var lvlLoadingOp = SceneManager.UnloadSceneAsync(gameManager.CurrentLevel);
+        lvlLoadingOp.completed += (dontcare) =>
         {
-            var scene = SceneManager.GetSceneByName(gameManager.CurrentLevel);
-            var lvlLoadingOp = SceneManager.UnloadSceneAsync(scene);
-            lvlLoadingOp.completed += (dontcare) =>
-            {
-                lvlLoadingOp = null;
-                gameManager.NextLevel();
-                gameManager.State = new LevelLoadingGameState(gameManager);
-            };
-        }
-        else gameManager.State = new GameEndGameState(gameManager);
+            lvlLoadingOp = null;
+            gameManager.NextLevel();
+            gameManager.State = new LevelLoadingGameState(gameManager);
+        };
     }
 
     public void Do()

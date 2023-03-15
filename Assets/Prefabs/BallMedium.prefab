@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 3431333517920473915}
   - component: {fileID: 2066193944649190449}
   - component: {fileID: 3431333518587798355}
+  - component: {fileID: 4419043398352620187}
   m_Layer: 6
   m_Name: BallMedium
   m_TagString: Untagged
@@ -161,6 +162,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Force: {x: 2, y: 0}
   SpawnOnPopping: {fileID: 2380767111002874868, guid: ce7da147c78afa24f955463771dc975f, type: 3}
+  Loots:
+  - Prefab: {fileID: 1412368898009878285, guid: 6cddf2819e2c95e428c9d9599f4c6245, type: 3}
+    DropChance: 0.02
+  - Prefab: {fileID: 2302262867898668765, guid: b6461fdffeb9a5a418bc70a48894feea, type: 3}
+    DropChance: 0.05
+  - Prefab: {fileID: 8196228952874182118, guid: fd31c4ed9a8db324faa8479b00cd81ef, type: 3}
+    DropChance: 0.05
+--- !u!114 &4419043398352620187
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1050645712291168069}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7676fa56c83d0e948b5425bd809d717e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PointsToAdd: 2500
 --- !u!1 &1054391153056274209
 GameObject:
   m_ObjectHideFlags: 0

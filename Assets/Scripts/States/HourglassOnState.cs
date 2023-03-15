@@ -28,7 +28,7 @@ public class HourglassOnState : IHourglassState
             var stoppablesNotStopped = Object.FindObjectsOfType<MonoBehaviour>().OfType<IStoppable>().Where(x => !x.IsStopped);
             foreach (IStoppable s in stoppablesNotStopped)
             {
-                s.Stop();
+                if (s != null) s.Stop();
             }
         }
         else

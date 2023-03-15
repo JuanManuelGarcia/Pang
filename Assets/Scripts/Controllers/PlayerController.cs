@@ -69,6 +69,7 @@ public class PlayerController : MonoBehaviour, IPlayerSubject, IPlayerPowerUps, 
         if (collision.gameObject.layer.Equals(LayerMask.NameToLayer("PowerUp")))
         {
             collision.gameObject.GetComponent<IPowerUpStrategy>().Execute(this);
+            PointsSingleton.Instance.AddPoints(1000);
             Destroy(collision.gameObject);
         }
     }
@@ -93,7 +94,7 @@ public class PlayerController : MonoBehaviour, IPlayerSubject, IPlayerPowerUps, 
     {
         foreach (IObserver o in observers)
         {
-            o.Update(this);
+            o.Revise(this);
         }
     }
 

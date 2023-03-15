@@ -5,6 +5,11 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
+    void Start()
+    {
+        PointsSingleton.Instance.ResetPoints();        
+    }
+
     void Update()
     {
         if (Input.GetButtonDown("Submit"))

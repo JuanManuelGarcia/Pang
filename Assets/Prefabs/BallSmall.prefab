@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 942542730}
   - component: {fileID: 6368364401486219410}
   - component: {fileID: 284540898}
+  - component: {fileID: 4110087404273925709}
   m_Layer: 6
   m_Name: BallSmall
   m_TagString: Untagged
@@ -161,6 +162,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Force: {x: 2, y: 0}
   SpawnOnPopping: {fileID: 0}
+  Loots:
+  - Prefab: {fileID: 1412368898009878285, guid: 6cddf2819e2c95e428c9d9599f4c6245, type: 3}
+    DropChance: 0.01
+  - Prefab: {fileID: 2302262867898668765, guid: b6461fdffeb9a5a418bc70a48894feea, type: 3}
+    DropChance: 0.025
+  - Prefab: {fileID: 8196228952874182118, guid: fd31c4ed9a8db324faa8479b00cd81ef, type: 3}
+    DropChance: 0.025
+--- !u!114 &4110087404273925709
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2380767111002874868}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7676fa56c83d0e948b5425bd809d717e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PointsToAdd: 1000
 --- !u!1 &5363104317619262338
 GameObject:
   m_ObjectHideFlags: 0
