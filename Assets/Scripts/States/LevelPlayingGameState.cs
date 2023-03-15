@@ -25,6 +25,7 @@ public class LevelPlayingGameState : IGameState, IPlayerObserver
             gameManager.State = new GameOverGameState(gameManager);
         }
 
+        //TODO: to state LevelFinished (Observe balls)
         //if (Input.anyKeyDown)
         //{
         //    gameManager.State = new LevelFinishedGameState(gameManager);
@@ -33,6 +34,7 @@ public class LevelPlayingGameState : IGameState, IPlayerObserver
 
     public void Update(ISubject subject)
     {
-        playerDied = (subject as IPlayerSubject).IsDead;
+        if (subject is IPlayerSubject)
+            playerDied = (subject as IPlayerSubject).IsDead;
     }
 }
