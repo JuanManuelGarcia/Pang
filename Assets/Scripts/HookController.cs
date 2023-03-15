@@ -46,7 +46,8 @@ public class HookController : MonoBehaviour
             else Destroy(gameObject);
         }
 
-        if (collision.gameObject.layer.Equals(LayerMask.NameToLayer("Ball")))
+        if (collision.gameObject.layer.Equals(LayerMask.NameToLayer("Ball")) ||
+            collision.gameObject.layer.Equals(LayerMask.NameToLayer("Container")))
         {
             Destroy(gameObject);
         }

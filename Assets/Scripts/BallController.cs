@@ -2,15 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BallController : MonoBehaviour
+public class BallController : MonoBehaviour, IBallSubject
 {
     [SerializeField] Vector2 Force;
     [SerializeField] GameObject SpawnOnPopping;
 
+    List<IObserver> observers = new List<IObserver>();
+    List<IBallSubject> ballsSpawned = new List<IBallSubject>();
     Rigidbody2D rb;
     Collider2D coll;
     Animator a;
     bool doDrops = false;
+
+    public List<IBallSubject> BallsSpawned { get { return ballsSpawned; } }
 
     // Start is called before the first frame update
     void Start()
@@ -30,12 +34,16 @@ public class BallController : MonoBehaviour
                 var go = GameObject.Instantiate(SpawnOnPopping);
                 go.transform.SetParent(transform.root);
                 go.transform.position = transform.position;
-                go.GetComponent<BallController>().Force = Force;
+                var bc = go.GetComponent<BallController>();
+                bc.Force = Force;
+                ballsSpawned.Add(bc);
 
                 go = GameObject.Instantiate(SpawnOnPopping);
                 go.transform.SetParent(transform.root);
                 go.transform.position = transform.position;
-                go.GetComponent<BallController>().Force = Vector2.left * Force;
+                bc = go.GetComponent<BallController>();
+                bc.Force = Vector2.left * Force;
+                ballsSpawned.Add(bc);
             }
 
             //TODO: Chance of powerup here!
@@ -69,5 +77,29 @@ public class BallController : MonoBehaviour
     public void BallDrops()
     {
         doDrops = true;
+    }
+
+    public void Attach(IObserver observer)
+    {
+        observers.Add(observer);
+    }
+
+    public void Detach(IObserver observer)
+    {
+        if (observers.Contains(observer)) observers.Remove(observer);
+    }
+
+    public void Notify()
+    {
+        foreach(IObserver o in observers)
+        {
+            o.Update(this);
+        }
+    }
+
+    private void OnDestroy()
+    {
+        Notify();
+        observers.Clear();
     }
 }

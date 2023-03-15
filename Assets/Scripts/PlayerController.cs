@@ -2,22 +2,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour, IPlayerSubject
+public class PlayerController : MonoBehaviour, IPlayerSubject, IPlayerPowerUps
 {
     [SerializeField] GameObject DefaultAmmoPrefab;
+    [SerializeField] GameObject MachineGunAmmoPrefab;
     [SerializeField] int HorizontalVelocity = 1;
 
     List<IObserver> observers = new List<IObserver>();
     Rigidbody2D rb;
+    SpriteRenderer sr;
 
     IWeaponStrategy defaultWeapon;
     IWeaponStrategy currentWeapon;
+
+    private bool shieldUp = false;
 
     public bool IsDead { get; private set; }
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        sr = GetComponent<SpriteRenderer>();
 
         defaultWeapon = new HookWeaponStrategy(DefaultAmmoPrefab);
         currentWeapon = defaultWeapon;
@@ -47,10 +52,29 @@ public class PlayerController : MonoBehaviour, IPlayerSubject
     {
         if (collision.gameObject.layer.Equals(LayerMask.NameToLayer("Ball")))
         {
-            IsDead = true;
-            Notify();
-            observers.Clear();
+            if (shieldUp)
+            {
+                ShieldDown();
+            }
+            else
+            {
+                IsDead = true;
+                Notify();
+                observers.Clear();
+            }
         }
+
+        if (collision.gameObject.layer.Equals(LayerMask.NameToLayer("PowerUp")))
+        {
+            collision.gameObject.GetComponent<IPowerUpStrategy>().Execute(this);
+            Destroy(collision.gameObject);
+        }
+    }
+
+    private void ShieldDown()
+    {
+        shieldUp = false;
+        sr.color = Color.white;
     }
 
     public void Attach(IObserver observer)
@@ -60,14 +84,37 @@ public class PlayerController : MonoBehaviour, IPlayerSubject
 
     public void Detach(IObserver observer)
     {
-        observers.Remove(observer);
-    }
+        if (observers.Contains(observer)) observers.Remove(observer);
+    } 
 
     public void Notify()
     {
-        foreach (IPlayerObserver o in observers)
+        foreach (IObserver o in observers)
         {
             o.Update(this);
         }
+    }
+
+    public void ApplyShield()
+    {
+        shieldUp = true;
+        sr.color = Color.blue;
+    }
+
+    public void ApplyMachineGun()
+    {
+        if(currentWeapon is MachineGunWeaponStrategy)
+        {
+            currentWeapon.AddAmmo(MachineGunWeaponStrategy.InitialAmmo);
+        }
+        else
+        {
+            currentWeapon = new MachineGunWeaponStrategy(MachineGunAmmoPrefab);
+        }
+    }
+
+    public void ApplyHourglass()
+    {
+        throw new System.NotImplementedException();
     }
 }
