@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
-using UnityEngine.SceneManagement;
 
 public class LevelPlayingGameState : IGameState, IPlayerObserver
 {
@@ -12,14 +11,14 @@ public class LevelPlayingGameState : IGameState, IPlayerObserver
     public LevelPlayingGameState(GameManager gameManager)
     {
         this.gameManager = gameManager;
-        var players = Object.FindObjectsOfType<MonoBehaviour>().OfType<IPlayer>();
-        foreach (IPlayer s in players)
+        var players = Object.FindObjectsOfType<MonoBehaviour>().OfType<IPlayerSubject>();
+        foreach (IPlayerSubject s in players)
         {
             s.Attach(this);
         }
     }
 
-    public void OnUpdate()
+    public void Do()
     {
         if(playerDied)
         {
@@ -32,8 +31,8 @@ public class LevelPlayingGameState : IGameState, IPlayerObserver
         //}
     }
 
-    public void PlayerDied(IPlayer subject)
+    public void Update(ISubject subject)
     {
-        playerDied = true;
+        playerDied = (subject as IPlayerSubject).IsDead;
     }
 }

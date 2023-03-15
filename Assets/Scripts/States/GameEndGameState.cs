@@ -13,7 +13,7 @@ public class GameEndGameState : IGameState
         gameManager.SetGameEndPanelActive(true);
     }
 
-    public void OnUpdate()
+    public void Do()
     {
         if (Input.anyKeyDown)
         {

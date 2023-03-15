@@ -21,7 +21,7 @@ public class GameOverGameState : IGameState
         };
     }
 
-    public void OnUpdate()
+    public void Do()
     {
         if (Input.anyKeyDown && unloaded)
         {

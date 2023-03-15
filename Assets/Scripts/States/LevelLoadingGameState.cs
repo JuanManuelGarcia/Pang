@@ -15,7 +15,7 @@ public class LevelLoadingGameState : IGameState
         };
     }
 
-    public void OnUpdate()
+    public void Do()
     {
     }
 }
