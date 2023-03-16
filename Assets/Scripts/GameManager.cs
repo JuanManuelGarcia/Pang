@@ -1,14 +1,31 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public class GameManager : MonoBehaviour
+public class GameManager : MonoBehaviour, ITimerSubject
 {
+    [Serializable]
+    public struct Level
+    {
+        public string SceneName;
+        public float TimeInSeconds;
+    }
+
     [SerializeField] GameObject GameEndPanel;
     [SerializeField] GameObject GameOverPanel;
 
-    [SerializeField] string[] Levels;
+    [SerializeField] Level[] Levels;
+
+    public string CurrentLevel { get { return Levels[currentLevel].SceneName; } }
+    public float CurrentLevelTime { get { return Levels[currentLevel].TimeInSeconds; } }
+
+    public IGameState State { set { state = value; } }
+    public float TimeLeft { get; set; }
+
+    List<IObserver> observers = new List<IObserver>();
     int currentLevel = 0;
     IGameState state;
-    IPlayerSubject currentPlayer;
 
     void Start()
     {
@@ -18,11 +35,14 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         state.Do();
+        
+        if (Input.GetButtonDown("Cancel"))
+        {
+            SetGameEndPanelActive(false);
+            ClearObservers();
+            SceneManager.LoadScene("Main_Menu", LoadSceneMode.Single);
+        }
     }
-
-    public string CurrentLevel { get { return Levels[currentLevel]; } }
-
-    public IGameState State { set { state = value; } }
 
     public void SetGameOverPanelActive(bool active)
     {
@@ -42,5 +62,25 @@ public class GameManager : MonoBehaviour
     public void NextLevel()
     {
         currentLevel++;
+    }
+
+    public void ClearObservers()
+    {
+        observers.Clear();
+    }
+
+    public void Attach(IObserver observer)
+    {
+        observers.Add(observer);
+    }
+
+    public void Detach(IObserver observer)
+    {
+        if (observers.Contains(observer)) observers.Remove(observer);
+    }
+
+    public void Notify()
+    {
+        foreach (IObserver o in observers) o.Revise(this);
     }
 }

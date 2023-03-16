@@ -1,7 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using System.Linq;
+using UnityEngine;
 
 public class LevelPlayingGameState : IGameState, IPlayerObserver, IBallObserver
 {
@@ -12,6 +10,8 @@ public class LevelPlayingGameState : IGameState, IPlayerObserver, IBallObserver
     public LevelPlayingGameState(GameManager gameManager)
     {
         this.gameManager = gameManager;
+        gameManager.TimeLeft = gameManager.CurrentLevelTime;
+        gameManager.Notify();
 
         var players = Object.FindObjectsOfType<MonoBehaviour>().OfType<IPlayerSubject>();
         foreach (IPlayerSubject s in players)
@@ -30,18 +30,35 @@ public class LevelPlayingGameState : IGameState, IPlayerObserver, IBallObserver
 
     public void Do()
     {
-        if(playerDied)
+        if (gameManager.TimeLeft > 0)
+        {
+            gameManager.TimeLeft -= Time.deltaTime;
+            gameManager.Notify();
+        }
+        else
+        {
+            gameManager.State = new GameOverGameState(gameManager);
+        }
+
+        if (playerDied)
         {
             gameManager.State = new GameOverGameState(gameManager);
         }
 
         if (numBalls == 0)
         {
-            gameManager.State = new LevelFinishedGameState(gameManager);
+            if (gameManager.IsThereANextLevel())
+            {
+                gameManager.State = new LevelFinishedGameState(gameManager);
+            }
+            else
+            {
+                gameManager.State = new GameEndGameState(gameManager);
+            }
         }
     }
 
-    public void Update(ISubject subject)
+    public void Revise(ISubject subject)
     {
         if (subject is IPlayerSubject)
         {
@@ -50,7 +67,7 @@ public class LevelPlayingGameState : IGameState, IPlayerObserver, IBallObserver
 
         if (subject is IBallSubject)
         {
-            foreach(ISubject s in (subject as IBallSubject).BallsSpawned)
+            foreach (ISubject s in (subject as IBallSubject).BallsSpawned)
             {
                 numBalls++;
                 s.Attach(this);

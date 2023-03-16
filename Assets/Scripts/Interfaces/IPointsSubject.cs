@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IObserver
+public interface IPointsSubject : ISubject
 {
-    void Revise(ISubject subject);
+    int Points { get; }
 }

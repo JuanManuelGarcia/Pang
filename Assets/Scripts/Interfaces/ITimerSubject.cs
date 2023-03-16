@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IObserver
+public interface ITimerSubject : ISubject
 {
-    void Revise(ISubject subject);
+    float TimeLeft { get; }
 }

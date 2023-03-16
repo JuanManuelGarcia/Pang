@@ -1,6 +1,4 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour, IPlayerSubject, IPlayerPowerUps, IHourglassController
@@ -10,6 +8,8 @@ public class PlayerController : MonoBehaviour, IPlayerSubject, IPlayerPowerUps, 
     [SerializeField] int HorizontalVelocity = 1;
 
     public bool IsDead { get; private set; }
+    public string CurrentWeaponName { get { return currentWeapon.Name; } }
+    public int CurrentWeaponAmmo { get { return currentWeapon.Ammo; } }
     public IHourglassState HourglassState { get; set; }
 
     List<IObserver> observers = new List<IObserver>();
@@ -28,6 +28,7 @@ public class PlayerController : MonoBehaviour, IPlayerSubject, IPlayerPowerUps, 
 
         defaultWeapon = new HookWeaponStrategy(DefaultAmmoPrefab);
         currentWeapon = defaultWeapon;
+        Notify();
 
         IsDead = false;
     }
@@ -39,7 +40,7 @@ public class PlayerController : MonoBehaviour, IPlayerSubject, IPlayerPowerUps, 
         force += new Vector2(HorizontalVelocity * Input.GetAxis("Horizontal"), 0);
         rb.AddForce(force);
 
-        if(Input.GetButton("Shoot"))
+        if (Input.GetButton("Shoot"))
         {
             bool ammoLeft = (bool)currentWeapon.Execute(transform);
 
@@ -47,6 +48,8 @@ public class PlayerController : MonoBehaviour, IPlayerSubject, IPlayerPowerUps, 
             {
                 currentWeapon = defaultWeapon;
             }
+
+            Notify();
         }
 
         if (HourglassState != null) HourglassState.Do();
@@ -71,6 +74,7 @@ public class PlayerController : MonoBehaviour, IPlayerSubject, IPlayerPowerUps, 
         if (collision.gameObject.layer.Equals(LayerMask.NameToLayer("PowerUp")))
         {
             collision.gameObject.GetComponent<IPowerUpStrategy>().Execute(this);
+            PointsSingleton.Instance.AddPoints(1000);
             Destroy(collision.gameObject);
         }
     }
@@ -89,13 +93,13 @@ public class PlayerController : MonoBehaviour, IPlayerSubject, IPlayerPowerUps, 
     public void Detach(IObserver observer)
     {
         if (observers.Contains(observer)) observers.Remove(observer);
-    } 
+    }
 
     public void Notify()
     {
         foreach (IObserver o in observers)
         {
-            o.Update(this);
+            o.Revise(this);
         }
     }
 
@@ -107,7 +111,7 @@ public class PlayerController : MonoBehaviour, IPlayerSubject, IPlayerPowerUps, 
 
     public void ApplyMachineGun()
     {
-        if(currentWeapon is MachineGunWeaponStrategy)
+        if (currentWeapon is MachineGunWeaponStrategy)
         {
             currentWeapon.AddAmmo(MachineGunWeaponStrategy.InitialAmmo);
         }
@@ -115,6 +119,7 @@ public class PlayerController : MonoBehaviour, IPlayerSubject, IPlayerPowerUps, 
         {
             currentWeapon = new MachineGunWeaponStrategy(MachineGunAmmoPrefab);
         }
+        Notify();
     }
 
     public void ApplyHourglass()

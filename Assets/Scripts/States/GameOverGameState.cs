@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -13,8 +11,7 @@ public class GameOverGameState : IGameState
         this.gameManager = gameManager;
         gameManager.SetGameOverPanelActive(true);
 
-        var scene = SceneManager.GetSceneByName(gameManager.CurrentLevel);
-        var lvlLoadingOp = SceneManager.UnloadSceneAsync(scene);
+        var lvlLoadingOp = SceneManager.UnloadSceneAsync(gameManager.CurrentLevel);
         lvlLoadingOp.completed += (dontcare) =>
         {
             unloaded = true;
@@ -23,9 +20,10 @@ public class GameOverGameState : IGameState
 
     public void Do()
     {
-        if (Input.anyKeyDown && unloaded)
+        if (Input.GetButtonDown("Submit") && unloaded)
         {
             gameManager.SetGameOverPanelActive(false);
+            PointsSingleton.Instance.ResetPoints();
             gameManager.State = new LevelLoadingGameState(gameManager);
         }
     }

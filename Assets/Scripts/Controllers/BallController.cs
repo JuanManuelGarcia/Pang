@@ -1,11 +1,20 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class BallController : MonoBehaviour, IBallSubject, IStoppable
 {
+    [Serializable]
+    public struct Loot
+    {
+        public GameObject Prefab;
+        public float DropChance;
+    }
+
     [SerializeField] Vector2 Force;
     [SerializeField] GameObject SpawnOnPopping;
+    [SerializeField] Loot[] Loots;
 
     List<IObserver> observers = new List<IObserver>();
     List<IBallSubject> ballsSpawned = new List<IBallSubject>();
@@ -47,6 +56,19 @@ public class BallController : MonoBehaviour, IBallSubject, IStoppable
                 bc = go.GetComponent<BallController>();
                 bc.Force = Vector2.left * Force;
                 ballsSpawned.Add(bc);
+            }
+
+            foreach (Loot l in Loots)
+            {
+                float random = UnityEngine.Random.Range(0f, 1f);
+                if (random <= l.DropChance)
+                {
+                    var go = Instantiate(l.Prefab);
+                    go.transform.parent = transform.root;
+                    go.transform.position = transform.position;
+
+                    break;
+                }
             }
 
             a.SetTrigger("SpawnComplete");
@@ -94,7 +116,7 @@ public class BallController : MonoBehaviour, IBallSubject, IStoppable
     {
         foreach(IObserver o in observers)
         {
-            o.Update(this);
+            o.Revise(this);
         }
     }
 
@@ -106,15 +128,21 @@ public class BallController : MonoBehaviour, IBallSubject, IStoppable
 
     public void Stop()
     {
-        velocityBackup = rb.velocity;
-        rb.bodyType = RigidbodyType2D.Static;
-        IsStopped = true;
+        if (rb != null)
+        {
+            velocityBackup = rb.velocity;
+            rb.bodyType = RigidbodyType2D.Static;
+            IsStopped = true;
+        }
     }
 
     public void Resume()
     {
-        rb.bodyType = RigidbodyType2D.Dynamic;
-        rb.velocity = velocityBackup;
-        IsStopped = false;
+        if (rb != null)
+        {
+            rb.bodyType = RigidbodyType2D.Dynamic;
+            rb.velocity = velocityBackup;
+            IsStopped = false;
+        }
     }
 }

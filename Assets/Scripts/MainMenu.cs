@@ -5,11 +5,21 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
+    void Start()
+    {
+        PointsSingleton.Instance.ResetPoints();        
+    }
+
     void Update()
     {
-        if(Input.anyKeyDown)
+        if (Input.GetButtonDown("Submit"))
         {
-            SceneManager.LoadScene("Level_World", LoadSceneMode.Single);
+            SceneManager.LoadScene("Level_UI", LoadSceneMode.Single);
+        }
+
+        if (Input.GetButtonDown("Cancel"))
+        {
+            Application.Quit();
         }
     }
 }
