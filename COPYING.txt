@@ -1,0 +1,5 @@
+Copyright (c) 2023 Juan Manuel García González <juanmanuel@garciagonzalez.eu>
+
+This software is licensed under the Creative Commons CC BY-NC-ND 4.0 international license.
+
+You can find the license terms in the LICENSE file in this repository or at https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode
