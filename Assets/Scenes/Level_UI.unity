@@ -2356,6 +2356,7 @@ GameObject:
   - component: {fileID: 1264201847}
   - component: {fileID: 1264201849}
   - component: {fileID: 1264201848}
+  - component: {fileID: 1264201850}
   m_Layer: 5
   m_Name: WeaponPanel
   m_TagString: Untagged
@@ -2424,6 +2425,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1264201846}
   m_CullTransparentMesh: 1
+--- !u!114 &1264201850
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1264201846}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36756660c20ca3f47b07d0fab22ac8da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  WeaponNameText: {fileID: 980658210}
+  InfinityImage: {fileID: 2043792975}
+  WeaponAmmoText: {fileID: 731110077}
 --- !u!1 &1333881091
 GameObject:
   m_ObjectHideFlags: 0
