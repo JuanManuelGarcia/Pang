@@ -138,4 +138,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DefaultAmmoPrefab: {fileID: 9199367717174094748, guid: b25c40a4daf44bb489dc856de02c1356, type: 3}
   MachineGunAmmoPrefab: {fileID: 8876447681110424069, guid: cebde579b9173c54286a539778858383, type: 3}
-  HorizontalVelocity: 40
+  HorizontalVelocity: 10

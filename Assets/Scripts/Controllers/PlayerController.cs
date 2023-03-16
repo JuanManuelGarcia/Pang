@@ -5,7 +5,7 @@ public class PlayerController : MonoBehaviour, IPlayerSubject, IPlayerPowerUps, 
 {
     [SerializeField] GameObject DefaultAmmoPrefab;
     [SerializeField] GameObject MachineGunAmmoPrefab;
-    [SerializeField] int HorizontalVelocity = 1;
+    [SerializeField] float HorizontalVelocity = 1;
 
     public bool IsDead { get; private set; }
     public string CurrentWeaponName { get { return currentWeapon.Name; } }
@@ -37,7 +37,7 @@ public class PlayerController : MonoBehaviour, IPlayerSubject, IPlayerPowerUps, 
     {
         rb.velocity = Vector2.zero;
         Vector2 force = Physics2D.gravity;
-        force += new Vector2(HorizontalVelocity * Input.GetAxis("Horizontal"), 0);
+        force += new Vector2(HorizontalVelocity * Screen.width * Input.GetAxis("Horizontal") * Time.deltaTime, 0);
         rb.AddForce(force);
 
         if (Input.GetButton("Shoot"))
