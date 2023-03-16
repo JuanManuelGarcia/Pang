@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -7,7 +5,7 @@ public class MainMenu : MonoBehaviour
 {
     void Start()
     {
-        PointsSingleton.Instance.ResetPoints();        
+        PointsSingleton.Instance.ResetPoints();
     }
 
     void Update()

@@ -1,6 +1,4 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 public class PointsSingleton : IPointsSubject
 {
@@ -14,7 +12,7 @@ public class PointsSingleton : IPointsSubject
         }
     }
 
-    private PointsSingleton() 
+    private PointsSingleton()
     {
         Points = 0;
     }

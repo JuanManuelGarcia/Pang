@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -114,7 +113,7 @@ public class BallController : MonoBehaviour, IBallSubject, IStoppable
 
     public void Notify()
     {
-        foreach(IObserver o in observers)
+        foreach (IObserver o in observers)
         {
             o.Revise(this);
         }

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class HookController : MonoBehaviour
@@ -34,9 +32,9 @@ public class HookController : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.gameObject.layer.Equals(LayerMask.NameToLayer("Wall")))
+        if (collision.gameObject.layer.Equals(LayerMask.NameToLayer("Wall")))
         {
-            if(fallingToGrownd)
+            if (fallingToGrownd)
             {
                 rb.gravityScale = 0;
                 rb.velocity = Vector2.zero;

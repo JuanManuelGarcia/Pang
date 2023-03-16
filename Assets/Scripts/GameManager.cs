@@ -35,7 +35,7 @@ public class GameManager : MonoBehaviour, ITimerSubject
     void Update()
     {
         state.Do();
-        
+
         if (Input.GetButtonDown("Cancel"))
         {
             SetGameEndPanelActive(false);

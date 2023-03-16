@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
@@ -14,6 +12,7 @@ public class UIPlayerWeaponObserver : MonoBehaviour, IPlayerObserver
 
     void Update()
     {
+        // The player is a different instance each Level, so it needs to look for him to observe him again when it dies 
         if (dyingPlayer == null)
         {
             var playerSubjects = Object.FindObjectsOfType<MonoBehaviour>().OfType<IPlayerSubject>();
@@ -32,7 +31,7 @@ public class UIPlayerWeaponObserver : MonoBehaviour, IPlayerObserver
 
         WeaponNameText.text = ps.CurrentWeaponName;
 
-        if(ps.CurrentWeaponAmmo < int.MaxValue)
+        if (ps.CurrentWeaponAmmo < int.MaxValue)
         {
             InfinityImage.SetActive(false);
             WeaponAmmoText.gameObject.SetActive(true);

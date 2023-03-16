@@ -127,4 +127,10 @@ public class PlayerController : MonoBehaviour, IPlayerSubject, IPlayerPowerUps, 
         if (HourglassState is HourglassOnState) (HourglassState as HourglassOnState).ResetTime();
         else HourglassState = new HourglassOnState(this);
     }
+
+    private void OnDestroy()
+    {
+        IsDead = true;
+        Notify();
+    }
 }
